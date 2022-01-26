@@ -100,7 +100,9 @@ const Intro1 = ({ navigation }) => {
         <Pressable
           disabled={name.length === 0}
           onPress={() => {
-            navigation.navigate("Password", { name });
+            setTimeout(() => {
+              navigation.navigate("Password", { name });
+            }, 200);
             offset.value = withSpring(300);
             offsetBtn.value = withSpring(300);
             offsetTextInput.value = withSpring(300);
