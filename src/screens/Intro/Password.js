@@ -11,13 +11,15 @@ import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withSpring,
+  runOnJS,
 } from "react-native-reanimated";
 import { Ionicons } from "@expo/vector-icons";
 
-const Intro1 = ({ navigation }) => {
-  const [name, setName] = useState("Adam Harmes");
+const Password = ({ navigation, route }) => {
+  const [password, setPassword] = useState("");
+  const { name } = route.params;
 
-  const offset = useSharedValue(300);
+  const offset = useSharedValue(400);
   const offsetTextInput = useSharedValue(300);
   const offsetBtn = useSharedValue(300);
   const animatedStyles = useAnimatedStyle(() => {
@@ -61,7 +63,7 @@ const Intro1 = ({ navigation }) => {
             },
           ]}
         >
-          HI!{"\n"}WHAT'S YOUR NAME?
+          CREATE A PASSWORD{"\n"}HERE {name.toUpperCase()}
         </Animated.Text>
         <Animated.View
           style={[
@@ -73,8 +75,11 @@ const Intro1 = ({ navigation }) => {
         >
           <TextInput
             autoFocus
-            value={name}
-            onChangeText={setName}
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry
+            placeholder="Password"
+            placeholderTextColor={"white"}
             style={{
               color: "white",
               fontSize: 30,
@@ -89,7 +94,7 @@ const Intro1 = ({ navigation }) => {
             paddingVertical: 15,
             paddingHorizontal: 18,
             borderRadius: 30,
-            backgroundColor: name.length === 0 ? "gray" : "#FB009F",
+            backgroundColor: password.length === 0 ? "gray" : "#FB009F",
             position: "absolute",
             right: "5%",
             bottom: "5%",
@@ -98,12 +103,14 @@ const Intro1 = ({ navigation }) => {
         ]}
       >
         <Pressable
-          disabled={name.length === 0}
+          disabled={password.length === 0}
           onPress={() => {
-            navigation.navigate("Password", { name });
-            offset.value = withSpring(300);
+            offset.value = withSpring(400);
             offsetBtn.value = withSpring(300);
             offsetTextInput.value = withSpring(300);
+            setTimeout(() => {
+              navigation.navigate("Congrats");
+            }, 100);
           }}
         >
           <Ionicons name="ios-arrow-forward" color="white" size={30} />
@@ -113,7 +120,7 @@ const Intro1 = ({ navigation }) => {
   );
 };
 
-export default Intro1;
+export default Password;
 
 const styles = StyleSheet.create({
   container: {
